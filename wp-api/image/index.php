@@ -12,8 +12,8 @@ $response = [ ];
 foreach($_REQUEST['tags'] as $tag) { 
 	// query media items
   // @TODO will need pagination here
-  $raw = wp_media_tags_plugin::media_tags_query(
-		$tag
+  $raw = @wp_media_tags_plugin::media_tags_query(
+		$tag, 'full'
 	); 
 
 	// pre match on src attribute

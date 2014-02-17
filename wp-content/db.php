@@ -167,11 +167,12 @@ class wpdb_mysqli extends wpdb {
 	 */
 	function db_connect() {
 
+		//echo "fuck you";
 		$this->is_mysql = true;
 
 		$new_link = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
-
+		//exit('asdf');
 		if ( WP_DEBUG ) {
 			$this->dbh = mysqli_connect( $this->dbhost, $this->dbuser, $this->dbpassword );
 		} else {
