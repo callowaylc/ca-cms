@@ -108,6 +108,38 @@ if (!class_exists ('wp_media_tags_plugin')) {
 		return $output;
 	}
 
+	function media_tags_attachments($term) {
+		$pattern = "/\d\,\s?\d/";
+		
+		if (strrpos($term, ',') !== false) {
+			$term = explode(',', $term);
+		}
+		if ( preg_match($pattern, $size) ) { 
+			$size = array($size);
+		}
+		
+		$args = array( 
+			'post_type' => 'attachment', 
+			'post_mime_type' => 'image',
+			'post_status' => 'inherit',
+			'tax_query' => array(
+					array(
+						'taxonomy' => 'media_tag',
+						'terms' => $term,
+						'field' => 'slug',
+					)
+				)
+		);
+
+		$loop    = new WP_Query($args);
+		$results = [ ]; 
+		while ( $loop->have_posts() ) : $loop->the_post();
+			$results[] = wp_get_attachment();
+		endwhile;
+	
+		return $results;
+	}	
+
 	// Function for shortcode
 	function media_tags_shortcode($atts) {
 		extract( shortcode_atts( array(
