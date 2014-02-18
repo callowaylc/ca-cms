@@ -4075,7 +4075,7 @@ function wp_get_attachment( $attachment_id = null ) {
 
 	$attachment = get_post( $attachment_id ); 
 	$src        = function($garbage) {
-		preg_match('/src="(.+)?"/', $garbage, $match);
+		preg_match('/src="(.+?)"/', $garbage, $match);
 		return $match[1];
 	};
 
@@ -4086,6 +4086,10 @@ function wp_get_attachment( $attachment_id = null ) {
 		'href' => get_permalink( $attachment->ID ),
 		'src' => $attachment->guid,
 		'thumb' => $src(wp_get_attachment_image(null, 'medium')),
-		'title' => $attachment->post_title
+		'title' => $attachment->post_title,
+		'tags'  => array_values(array_map(function($hash) { 
+			return $hash->slug;
+
+		}, get_the_terms($attachment->ID, 'media_tag')))
 	);
 }
