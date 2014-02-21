@@ -16,7 +16,7 @@ foreach($_REQUEST['terms'] as $parent) {
   $children = get_term_children($parent->term_id, TAXONOMY);
 	
   foreach($children as $id) {
-    $data[] = (array)get_term_by('id', $id, TAXONOMY);
+    $data[$id] = (array)get_term_by('id', $id, TAXONOMY);
   }
 }
 
