@@ -122,6 +122,7 @@ if (!class_exists ('wp_media_tags_plugin')) {
 			'post_type' => 'attachment', 
 			'post_mime_type' => 'image',
 			'post_status' => 'inherit',
+                        'posts_per_page' => 100,
 			'tax_query' => array(
 					array(
 						'taxonomy' => 'media_tag',

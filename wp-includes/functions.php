@@ -4085,7 +4085,8 @@ function wp_get_attachment( $attachment_id = null ) {
 		'description' => $attachment->post_content,
 		'href' => get_permalink( $attachment->ID ),
 		'src' => $attachment->guid,
-		'thumb' => $src(wp_get_attachment_image(null, 'medium')),
+		'thumb' => $src(wp_get_attachment_image($attachment->ID, 'medium')),
+		'full'  => $src(wp_get_attachment_image($attachment->ID, 'full')),
 		'title' => $attachment->post_title,
 		'tags'  => array_values(array_map(function($hash) { 
 			return $hash->slug;
