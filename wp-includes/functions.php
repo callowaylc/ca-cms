@@ -4079,7 +4079,7 @@ function wp_get_attachment( $attachment_id = null ) {
 		return $match[1];
 	};
 
-	return array(
+	$result = array(
 		'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
 		'caption' => $attachment->post_excerpt,
 		'description' => $attachment->post_content,
@@ -4091,6 +4091,19 @@ function wp_get_attachment( $attachment_id = null ) {
 		'tags'  => array_values(array_map(function($hash) { 
 			return $hash->slug;
 
-		}, get_the_terms($attachment->ID, 'media_tag')))
+		}, $terms = get_the_terms($attachment->ID, 'media_tag')))
 	);
+
+
+  // get artist
+	$parent   = get_term_by('name', 'artist', 'category');
+	$children = get_term_children($parent->term_id, 'category');
+
+  foreach($terms as $term) {
+    if (in_array($term->term_id, $children)) {
+      $result['artist'] = $term->name;
+    }
+  }
+
+  return $result;
 }

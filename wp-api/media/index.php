@@ -1,45 +1,56 @@
 <?php
 /**
- * "Controller" for image resource
+ * "Controller" for media resource; responsible for updating 
+ * media items
  *
  * @package WordPress
  * @subpackage Administration
  */
 
 // iterate through tags and build listing of images
+global $wpdb;
 $data = [ ];
 
-if (isset($_REQUEST['tags'])) {
-  foreach($_REQUEST['tags'] as $tag) { 
-  	// query media items
-    // @TODO will need pagination here
-    $attachments = @wp_media_tags_plugin::media_tags_attachments(
-  		$tag
-  	); 
 
-    $data = empty($data)  
-    	? $attachments
-    	: array_uintersect($data, $attachments, function($a, $b) {
-    		return strcmp($a['src'], $b['src']);
-    	});
-  	
-  }
+// get payload 
+$payload  = (array)json_decode(stripslashes($_REQUEST['payload']));
+$filename = $payload['filename'];
 
-} else if (isset($_REQUEST['slug'])) {
 
-    global $wpdb;
+$wp_filetype   = wp_check_filetype($filename);
+$wp_upload_dir = wp_upload_dir();
 
-    $res = $wpdb->get_results(
-      "SELECT p.ID 
-        FROM wp_posts p
-        WHERE post_type='attachment'
-        AND post_mime_type LIKE 'image%'
-        AND LOWER(REPLACE(`post_title`, ' ', '-')) = '$_REQUEST[slug]'"
+
+$attachment = array(
+   'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ), 
+   'post_mime_type' => $wp_filetype['type'],
+   'post_title'     => $payload['title'],
+   'post_content'   => $payload['description'],
+   'post_status'    => 'inherit'
+);
+$attach_id = wp_insert_attachment( $attachment, $filename, 37 );
+
+// you must first include the image.php file
+// for the function wp_generate_attachment_metadata() to work
+require_once( ABSPATH . 'wp-admin/includes/image.php' );
+$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+wp_update_attachment_metadata( $attach_id, $attach_data );
+
+// iterate through terms and attach to post object
+foreach($payload['terms'] as $term) {
+  $term = (array)$term;
+
+
+  $wpdb->get_results(
+    "INSERT INTO wp_term_relationships (
+      object_id, term_taxonomy_id
+
+    ) VALUES (
+      $attach_id, {$term['term_taxonomy_id']}
     
-    );
-
-    $data[] = wp_get_attachment($res[0]->ID);
+    )"
+  );  
 }
 
 // finally encode and "return" response
-echo json_encode(array_values($data));
+echo json_encode([ $attach_id ]);
