@@ -4080,6 +4080,7 @@ function wp_get_attachment( $attachment_id = null ) {
 	};
 
 	$result = array(
+    'id'  => $attachment->ID,
 		'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
 		'caption' => $attachment->post_excerpt,
 		'description' => $attachment->post_content,
@@ -4087,23 +4088,37 @@ function wp_get_attachment( $attachment_id = null ) {
 		'src' => $attachment->guid,
 		'thumb' => $src(wp_get_attachment_image($attachment->ID, 'medium')),
 		'full'  => $src(wp_get_attachment_image($attachment->ID, 'full')),
-		'title' => $attachment->post_title,
-		'tags'  => array_values(array_map(function($hash) { 
-			return $hash->slug;
-
-		}, $terms = get_the_terms($attachment->ID, 'media_tag')))
+		'title' => $attachment->post_title
 	);
 
+	if (($terms =  get_the_terms($attachment->ID, 'media_tag'))) {
+		$result['tags'] = array_values(array_map(function($hash) { 
+      return $hash->slug;
 
-  // get artist
-	$parent   = get_term_by('name', 'artist', 'category');
-	$children = get_term_children($parent->term_id, 'category');
+    }, $terms)); 		
 
-  foreach($terms as $term) {
-    if (in_array($term->term_id, $children)) {
-      $result['artist'] = $term->name;
-    }
-  }
+  	// get artist
+		$parent   = get_term_by('name', 'artist', 'category');
+		$children = get_term_children($parent->term_id, 'category');
+  	
+		foreach($terms as $term) {
+    	if (in_array($term->term_id, $children)) {
+      	$result['artist'] = $term->name;
+    	}
+  	}
+
+  	// get exhibit, should it exist
+  	// get artist
+  	$parent   = get_term_by('name', 'exhibit', 'category');
+  	$children = get_term_children($parent->term_id, 'category');
+
+  	foreach($terms as $term) {
+    	if (in_array($term->term_id, $children)) {
+      	$result['exhibit'] = $term->name;
+    	}
+  	} 
+	} 
+
 
   return $result;
 }

@@ -2938,8 +2938,10 @@ function wp_update_post( $postarr = array(), $wp_error = false ) {
 		$postarr['post_date_gmt'] = '';
 	}
 
-	if ($postarr['post_type'] == 'attachment')
+	if ($postarr['post_type'] == 'attachment') {
+		$postarr['post_modified'] = $postarr['post_modified_gmt'] = current_time('mysql');
 		return wp_insert_attachment($postarr);
+	}
 
 	return wp_insert_post( $postarr, $wp_error );
 }
@@ -3969,8 +3971,19 @@ function wp_insert_attachment($object, $file = false, $parent = 0) {
 	$data = compact( array( 'post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_content_filtered', 'post_title', 'post_excerpt', 'post_status', 'post_type', 'comment_status', 'ping_status', 'post_password', 'post_name', 'to_ping', 'pinged', 'post_modified', 'post_modified_gmt', 'post_parent', 'menu_order', 'post_mime_type', 'guid' ) );
 	$data = wp_unslash( $data );
 
+
 	if ( $update ) {
 		$wpdb->update( $wpdb->posts, $data, array( 'ID' => $post_ID ) );
+		
+		//if (isset($post_modified) && isset($post_modified_gmt)) { 
+			//$wpdb->query(
+			//	"UPDATE wp_posts
+      // 	 SET 	post_modified='$post_date',
+			//	      post_modified_gmt='$post_date_gmt'
+      //   WHERE
+      //   	 ID = $post_ID"
+			//); 
+		//}	
 	} else {
 		// If there is a suggested ID, use it if not already present
 		if ( !empty($import_id) ) {

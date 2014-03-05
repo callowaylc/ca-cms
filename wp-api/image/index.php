@@ -43,16 +43,32 @@ if (isset($_REQUEST['tags'])) {
 # otherwise we are just pulling post data; this needs to be paginated
 # because its motherfucking slow
 } else {
-$query_images_args = array(
-    'post_type' => 'attachment', 'post_mime_type' =>'image', 'post_status' => 'inherit', 'posts_per_page' => -1,
-);
+  global $wpdb;
 
-$query_images = new WP_Query( $query_images_args );
-$images = array();
-foreach ( $query_images->posts as $image) {
-    $images[]= wp_get_attachment_url( $image->ID );
-}
+  $limit  = $_REQUEST['limit']  ?: 10;
+  $offset = $_REQUEST['offset'] ?: 0; 
+  $res    = $wpdb->get_results($query = sprintf(
+    'SELECT wp.ID as id
+     FROM wp_posts wp 
+     WHERE 
+       unix_timestamp(`wp`.`post_modified`) >= unix_timestamp(
+        CURRENT_TIMESTAMP - INTERVAL %d MINUTE
+       
+       ) AND
+       wp.post_type   = "attachment" AND
+       wp.post_status = "inherit"
+     LIMIT %d OFFSET %d' 
+     
+  // for interval, we make value arbitrarily large to cover
+  // all posts
+  , isset($_REQUEST['recent']) && $_REQUEST['recent'] ? 10 : 100000, $limit, $offset));
+
+
+  //foreach ($query_images->posts as $image) {
+  foreach($res as $result) { 
+    $data[] = wp_get_attachment($result->id);
+  }
 }
 
 // finally encode and "return" response
-echo json_encode(array_values($data));
+echo json_encode(array_values($data), JSON_PRETTY_PRINT);
