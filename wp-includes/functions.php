@@ -4095,15 +4095,18 @@ function wp_get_attachment( $attachment_id = null ) {
 		$result['tags'] = array_values(array_map(function($hash) { 
       return $hash->slug;
 
-    }, $terms)); 		
+    }, $terms));
 
   	// get artist
 		$parent   = get_term_by('name', 'artist', 'category');
 		$children = get_term_children($parent->term_id, 'category');
-  	
+
 		foreach($terms as $term) {
     	if (in_array($term->term_id, $children)) {
-      	$result['artist'] = $term->name;
+        $term = get_term($term->term_id, 'category');
+      	$result['artist']             = $term->name;
+        $result['artist_description'] = $term->description;
+        $result['artist_slug']        = $term->slug;        
     	}
   	}
 
@@ -4114,7 +4117,11 @@ function wp_get_attachment( $attachment_id = null ) {
 
   	foreach($terms as $term) {
     	if (in_array($term->term_id, $children)) {
-      	$result['exhibit'] = $term->name;
+        $term = get_term($term->term_id, 'category');        
+      	$result['exhibit']             = $term->name;
+        $result['exhibit_description'] = $term->description;
+        $result['exhibit_slug']        = $term->slug;
+
     	}
   	} 
 	} 
