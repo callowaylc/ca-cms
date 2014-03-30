@@ -4079,6 +4079,7 @@ function wp_get_attachment( $attachment_id = null ) {
 		return $match[1];
 	};
 
+
 	$result = array(
     'id'  => $attachment->ID,
 		'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),

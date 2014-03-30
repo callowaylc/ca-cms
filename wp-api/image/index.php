@@ -57,6 +57,7 @@ if (isset($_REQUEST['tags'])) {
        ) AND
        wp.post_type   = "attachment" AND
        wp.post_status = "inherit"
+     ORDER BY wp.post_modified DESC
      LIMIT %d OFFSET %d' 
      
   // for interval, we make value arbitrarily large to cover

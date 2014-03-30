@@ -47,6 +47,7 @@ if (!defined('DB_HOST'))
 if (!defined('WP_CONTENT_DIR') && !defined('DONT_SET_WP_CONTENT_DIR'))
     define('WP_CONTENT_DIR', '/var/www/cms/wp-content');
 
+define('FS_METHOD', 'direct');
 /* Default value for the table_prefix variable so that it doesn't need to
    be put in every host-specific config file */
 if (!isset($table_prefix)) {
