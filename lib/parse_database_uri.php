@@ -5,6 +5,7 @@
 # parse_database_uri 'scheme://$username:$password@$hostname/$database'
 namespace callowayart;
 
+
 function parse_database_uri( $uri ) {
 
 
