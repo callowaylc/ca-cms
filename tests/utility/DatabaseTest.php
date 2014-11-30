@@ -9,11 +9,13 @@ use callowayart\utility;
 
 class Database extends \PHPUnit_Framework_TestCase {
 
-  const URI = 'scheme://username:password@www.host.com/database_name';
-
   public function test_parse_uri() {
-    $info = ( new utility\Database )->parse_uri( self::URI );
+    $info = ( new utility\Database )->parse_uri( $this->uri() );
+
     
+    # assert that result is hash 
+    $this->assertTrue(is_array( $info ));
+
     # assert that five elements have been parsed
     $this->assertCount( 5, $info );
 
@@ -39,7 +41,7 @@ class Database extends \PHPUnit_Framework_TestCase {
 
   private function parts() {
     return [ 
-      'scheme', 'username', 'password', 'www.host.com', 'database_name'
+      'scheme', 'username', 'password', 'hostname', 'database'
     ];
   }
 }

@@ -8,15 +8,15 @@ namespace callowayart\utility;
 class Database {
   public function parse_uri( $uri ) {
 
-    return false;
     // define regular expression and hash keys
     // to find database credentials
     $credentials = array();
     $matches     = array(
-      'username' => '#//(.+?)(\:|\@)#',
-      'password' => '#\:([^\/]*?)\@#',
-      'hostname' => '#\@(.+?)/#',
-      'database' => '#\@.+?/(.+?)\?#'
+      'scheme'   => '#^(?<scheme>.+?)://#',
+      'username' => '#//(?<username>.+?)(\:|\@)#',
+      'password' => '#\:(?<password>[^\/]*?)\@#',
+      'hostname' => '#\@(?<hostname>.+?)/#',
+      'database' => '#\@.+?/(?<database>.+)#'
     );
 
     // iterate through dataqbase credentials, perform lookup
@@ -25,10 +25,11 @@ class Database {
     // exceptional events; for right now, a leap of faith is fine
     foreach($matches as $key => $regex) {
       preg_match( $regex, $uri, $match );
-      $credentials[$key] = isset($match[1]) 
-        ? $match[1]
-        : ''; 
+
+      $credentials[$key] = $match[$key]; 
     }
+
+    return $credentials;
   }
 
 }
