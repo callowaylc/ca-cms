@@ -9,7 +9,8 @@
 
   "autoload": {
     "psr-4": {
-      "callowayart\\": [ "./lib/callowayart", "./tests" ]
+      "callowayart\\":      "./lib",
+      "callowayart\\test\\": "./tests"
 
     }
   }    
