@@ -1,0 +1,35 @@
+server {
+  listen   80;
+
+  root             /app/cms;
+  index            index.php index.html;
+  server_name      cms.callowayart.com cms.callowayart.localhost;
+  port_in_redirect off;
+
+  error_log      /var/log/nginx/cms.error.log;
+  error_page 404 /404.html;
+  error_page 500 502 503 504 /50x.html;  
+
+  location = / {
+    if ($args ~ 'json') {
+      break;
+    }
+ 
+    return 301 /wp-admin;
+  }
+
+  rewrite   ^/api/(.*)$ /wp-api/index.php?resource=$1&$args last;
+  try_files $uri $uri/ /index.php?q=$uri&$args;
+      
+  location = /50x.html {
+    root /usr/share/nginx/www;
+  }
+
+  # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+  location ~ \.php$ {
+    try_files     $uri =404;
+    fastcgi_pass  unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include       fastcgi_params;
+  }
+}
