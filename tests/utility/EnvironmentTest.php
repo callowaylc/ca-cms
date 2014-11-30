@@ -8,7 +8,10 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
   function __construct() {
     # load .env
     # TODO: need to account for application root
-    \Dotenv::load( '.' );
+    try { 
+      \Dotenv::load( '.' );
+      
+    } catch(\Exception $swallow) { }
   }
 
   # tests that required environment variables are present
