@@ -7,7 +7,7 @@ namespace callowayart\test\utility;
 
 use callowayart\utility;
 
-class Database extends \PHPUnit_Framework_TestCase {
+class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
   public function test_parse_uri() {
     $info = ( new utility\Database )->parse_uri( $this->uri() );

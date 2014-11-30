@@ -1,0 +1,27 @@
+<?php
+# author:      chrisitan calloway admin@callowayart.com
+# description: checks if required env variables are available
+namespace callowayart\test\utility;
+
+class EnvironmentTest extends \PHPUnit_Framework_TestCase {
+
+  # tests that required environment variables are present
+  public function test_environment_variables_present() {
+    foreach ($this->required() as $variable) {
+      $this->assertTrue(getenv( $variable ) !== false);
+    }
+
+  }
+
+  private function required() {
+    return [
+      'DATABASE_URI',       
+      'DB_HOST',               
+      'DB_PASSWORD',           
+      'WP_HOME',               
+      'WP_SITEURL',            
+      'AWS_ACCESS_KEY_ID',     
+      'AWS_SECRET_ACCESS_KEY'      
+    ];
+  }
+}
