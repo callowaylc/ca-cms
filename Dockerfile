@@ -13,6 +13,7 @@ FROM ubuntu:14.04.1
 MAINTAINER Christian Calloway callowaylc@gmail.com
 
 # Install Services
+RUN apt-get update
 RUN apt-get install -y nginx nginx-extras monit php5-gd libssh2-php php5-fpm php5-mysql
 
 # Service configuration
