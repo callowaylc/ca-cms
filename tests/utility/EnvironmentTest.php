@@ -5,6 +5,12 @@ namespace callowayart\test\utility;
 
 class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 
+  function __construct() {
+    # load .env
+    # TODO: need to account for application root
+    \Dotenv::load( '.' );
+  }
+
   # tests that required environment variables are present
   public function test_environment_variables_present() {
     foreach ($this->required() as $variable) {
@@ -15,11 +21,8 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 
   private function required() {
     return [
-      'DATABASE_URI',       
-      'DB_HOST',               
-      'DB_PASSWORD',           
+      'DATABASE_URI',               
       'WP_HOME',               
-      'WP_SITEURL',            
       'AWS_ACCESS_KEY_ID',     
       'AWS_SECRET_ACCESS_KEY'      
     ];
