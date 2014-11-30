@@ -27,7 +27,7 @@
     "php": ">=5.5.9",
     "monolog/monolog": "1.2.*",
     "vlucas/phpdotenv": "1.0.*@dev",
-    "wordpress": "4.1",
+    "wordpress": "4.0.1",
     "fancyguy/webroot-installer": "1.0.0"    
   },
 
@@ -36,7 +36,7 @@
   },
 
   "scripts": {
-    "post-package-install": [
+    "post-update-cmd": [
       "./bin/setup"
     ]
   },  
