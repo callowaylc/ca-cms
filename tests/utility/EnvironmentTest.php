@@ -22,7 +22,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
   private function required() {
     return [
       'DATABASE_URI',               
-      'WP_HOME',               
+      'CNAME',               
       'AWS_ACCESS_KEY_ID',     
       'AWS_SECRET_ACCESS_KEY'      
     ];
