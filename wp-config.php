@@ -1,7 +1,7 @@
 <?php
 
 // require application bootstrap
-require_once './bootstrap.php';
+require_once __DIR__  . '/bootstrap.php';
 
 /* Default value for some constants if they have not yet been set
    by the host-specific config files */
