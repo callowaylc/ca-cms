@@ -1,0 +1,34 @@
+# author: christian calloway ccalloway@cancapital.com
+# description: configuration for circle ci service
+machine:
+  environment:
+    DATABASE_URI:          mysql://username:password@localhost/database
+    DB_HOST:               database
+    DB_PASSWORD:           password
+    WP_HOME:               cms.callowayart.com
+    WP_SITEURL:            cms.callowayart.com
+    AWS_ACCESS_KEY_ID:     access-key-id
+    AWS_SECRET_ACCESS_KEY: secret-access-key
+  php:
+    version: 5.6.2
+  hosts:
+    www.callowayart.com: 0.0.0.0
+    cms.callowayart.com: 0.0.0.0
+
+dependencies:
+  post:
+    # apache setup
+    # - cp ~/cancapital.com/scm/etc/apache2/sites-available/default /etc/apache2/sites-available
+    # - a2ensite default
+    # - sudo service apache2 restart
+
+    # setup git user
+    - git config --global user.email "callowaylc@gmail.com"
+    - git config --global user.name  "christian calloway"
+
+
+test:
+  override:
+    - ./vendor/bin/phpunit
+    #- ./vendor/bin/behat
+
