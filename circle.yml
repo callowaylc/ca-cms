@@ -3,10 +3,7 @@
 machine:
   environment:
     DATABASE_URI:          mysql://username:password@localhost/database
-    DB_HOST:               database
-    DB_PASSWORD:           password
-    WP_HOME:               cms.callowayart.com
-    WP_SITEURL:            cms.callowayart.com
+    CNAME:                 cms.callowayart.com
     AWS_ACCESS_KEY_ID:     access-key-id
     AWS_SECRET_ACCESS_KEY: secret-access-key
   php:
