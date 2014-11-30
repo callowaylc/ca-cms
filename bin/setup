@@ -1,0 +1,8 @@
+#!/bin/bash
+# author: christian callowahy
+# description: hook into composer post package install; the point is to create
+# an idempotent process on deploy and testing
+
+cp ./bootstrap.php ./wp
+cp ./wp-config.php ./wp
+cp -rf ./plugins   ./wp/wp-content/
