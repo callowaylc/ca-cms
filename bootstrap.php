@@ -3,7 +3,7 @@
 # description: loads required files for custom wordpress install
 
 # first require composer autoloader
-require_once './vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 # set required wordpress constants
 $connection = ( new callowayart\utility\Database )->parse_uri(getenv( 'DATABASE_URI' ));
